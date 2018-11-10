@@ -1,0 +1,14 @@
+kumuluzee:
+  name: microservice-subscriptions
+  version: 1.0.0
+  env:
+    name: dev
+  datasources:
+      - jndi-name: jdbc/streamingDS
+        connection-url: jdbc:postgresql://192.168.99.100:5432/streaming
+        username: postgres
+        max-pool-size: 20
+  server:
+    base-url : http://localhost:8082
+    http:
+      port: 8082
