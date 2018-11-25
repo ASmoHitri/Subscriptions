@@ -1,14 +1,13 @@
 package beans;
 
-import com.kumuluz.ee.configuration.cdi.ConfigBundle;
-import com.kumuluz.ee.configuration.cdi.ConfigValue;
+import com.kumuluz.ee.discovery.annotations.DiscoverService;
 import com.kumuluz.ee.rest.beans.QueryParameters;
 import com.kumuluz.ee.rest.utils.JPAUtils;
 import configurations.AppConfigs;
+import dtos.Playlist;
 import entities.User;
-import response_entities.ResponseUser;
+import dtos.ResponseUser;
 
-import javax.annotation.PostConstruct;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.enterprise.context.ApplicationScoped;
@@ -16,9 +15,12 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.ws.rs.ProcessingException;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.UriInfo;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
@@ -27,27 +29,25 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @ApplicationScoped
 public class UsersBean {
 
     @Inject
     private AppConfigs appConfig;
+
     @Context
     protected UriInfo uriInfo;
 
     @PersistenceContext(unitName = "subscriptions-jpa")
     private EntityManager entityManager;
 
-//    private Client httpClient;
-//    private String basePath;
+    private Client httpClient = ClientBuilder.newClient();
 
-//    @PostConstruct
-//    private void init() {
-//        httpClient = ClientBuilder.newClient();
-//        basePath = "http://localhost:8081/v1/"; // for demo?
-//    }
-
+    @Inject
+    @DiscoverService("streaming-catalogs")
+    private Optional<String> basePath;
 
     public List<ResponseUser> getUsers() {
         QueryParameters queryParameters = QueryParameters.query(uriInfo.getRequestUri().getQuery()).build();
@@ -143,11 +143,17 @@ public class UsersBean {
         return false;
     }
 
-//    public List<Playlist> getPlaylists(String userId) {
-//        // TODO playlists
-//        //httpClient.target().request().buildGet()
-//        return null;
-//    }
+    public List<Playlist> getPlaylists(int userId) {
+        if (basePath.isPresent()) {
+            try {
+                return httpClient.target(basePath.get() + "/api/v1/playlists?where=userId:EQ:" + userId)
+                        .request().get(new GenericType<List<Playlist>>(){});
+            } catch (WebApplicationException | ProcessingException exception) {
+                return null;
+            }
+        }
+        return null;
+    }
 
     private void beginTx() {
         if (!entityManager.getTransaction().isActive())

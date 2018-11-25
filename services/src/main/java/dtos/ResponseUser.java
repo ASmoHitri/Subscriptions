@@ -1,4 +1,4 @@
-package response_entities;
+package dtos;
 
 import entities.User;
 

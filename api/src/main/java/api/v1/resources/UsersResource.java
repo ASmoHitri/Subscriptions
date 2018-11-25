@@ -1,6 +1,7 @@
 package api.v1.resources;
 
-import response_entities.ResponseUser;
+import dtos.Playlist;
+import dtos.ResponseUser;
 import beans.UsersBean;
 import entities.User;
 
@@ -78,5 +79,15 @@ public class UsersResource {
         } else {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
+    }
+
+    @GET
+    @Path("{id}/playlists")
+    public Response getUsersPlaylists(@PathParam("id") int userId) {
+        List<Playlist> playlists = usersBean.getPlaylists(userId);
+        if (playlists == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok(playlists).build();
     }
 }
