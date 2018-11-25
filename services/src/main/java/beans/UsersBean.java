@@ -1,7 +1,10 @@
 package beans;
 
+import com.kumuluz.ee.configuration.cdi.ConfigBundle;
+import com.kumuluz.ee.configuration.cdi.ConfigValue;
 import com.kumuluz.ee.rest.beans.QueryParameters;
 import com.kumuluz.ee.rest.utils.JPAUtils;
+import configurations.AppConfigs;
 import entities.User;
 import response_entities.ResponseUser;
 
@@ -9,6 +12,7 @@ import javax.annotation.PostConstruct;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -27,6 +31,8 @@ import java.util.List;
 @ApplicationScoped
 public class UsersBean {
 
+    @Inject
+    private AppConfigs appConfig;
     @Context
     protected UriInfo uriInfo;
 
@@ -54,6 +60,9 @@ public class UsersBean {
     }
 
     public ResponseUser getUser(int userId) {
+        if (appConfig.getMaintenanceMode()) {
+            System.out.println("Warning: maintenance mode enabled");
+        }
         User user = entityManager.find(User.class, userId);
         if (user != null){
             return new ResponseUser(user);
