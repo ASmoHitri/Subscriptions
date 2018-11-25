@@ -1,5 +1,8 @@
 package dtos;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties({"userId", "songs" })
 public class Playlist {
     private int id;
     private String name;
