@@ -7,6 +7,7 @@ kumuluzee:
       - jndi-name: jdbc/streamingDS
         connection-url: jdbc:postgresql://192.168.99.100:5432/streaming
         username: postgres
+        password: postgres
         max-pool-size: 20
   server:
     base-url : http://localhost:8082
@@ -14,9 +15,9 @@ kumuluzee:
       port: 8082
   config:
     etcd:
-      hosts: http://localhost:2379
+      hosts: http://192.168.99.100:2379
   discovery:
     etcd:
-      hosts: http://localhost:2379
+      hosts: http://192.168.99.100:2379
 tests:
   maintenance-mode: false

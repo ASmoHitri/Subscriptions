@@ -81,12 +81,14 @@ public class UsersResource {
         }
     }
 
+
     @GET
-    @Path("{id}/playlists")
-    public Response getUsersPlaylists(@PathParam("id") int userId) {
+    @Path("playlists")
+    public Response getUsersPlaylists() {
+        int userId = 1;
         List<Playlist> playlists = usersBean.getPlaylists(userId);
         if (playlists == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
         return Response.ok(playlists).build();
     }

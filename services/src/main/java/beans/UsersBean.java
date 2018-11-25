@@ -46,7 +46,7 @@ public class UsersBean {
     private Client httpClient = ClientBuilder.newClient();
 
     @Inject
-    @DiscoverService("streaming-catalogs")
+    @DiscoverService("microservice-catalogs")
     private Optional<String> basePath;
 
     public List<ResponseUser> getUsers() {
@@ -146,8 +146,10 @@ public class UsersBean {
     public List<Playlist> getPlaylists(int userId) {
         if (basePath.isPresent()) {
             try {
-                return httpClient.target(basePath.get() + "/api/v1/playlists?where=userId:EQ:" + userId)
+                List<Playlist> playlists =  httpClient.target(basePath.get() + "/api/v1/playlists?where=userId:EQ:" + userId)
                         .request().get(new GenericType<List<Playlist>>(){});
+                System.out.println(playlists);
+                return playlists;
             } catch (WebApplicationException | ProcessingException exception) {
                 return null;
             }
