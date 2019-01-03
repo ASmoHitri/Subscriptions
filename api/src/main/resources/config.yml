@@ -23,5 +23,9 @@ kumuluzee:
     checks:
       data-source-health-check:
         jndi-name: jdbc/streamingDS
+      disk-space-health-check:
+        threshold: 50000000
+      etcd-health-check:
+        connection-url: http://192.168.99.100:2379/health # pravi url?
 tests:
   maintenance-mode: false
