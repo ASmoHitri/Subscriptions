@@ -1,6 +1,7 @@
 package beans;
 
 import com.kumuluz.ee.discovery.annotations.DiscoverService;
+import org.eclipse.microprofile.metrics.annotation.Timed;
 import com.kumuluz.ee.rest.beans.QueryParameters;
 import com.kumuluz.ee.rest.utils.JPAUtils;
 import configurations.AppConfigs;
@@ -48,7 +49,7 @@ public class UsersBean {
     @Inject
     @DiscoverService("microservice-catalogs")
     private Optional<String> basePath;
-
+    @Timed(name = "get-users") //samo ta?
     public List<ResponseUser> getUsers() {
         QueryParameters queryParameters = QueryParameters.query(uriInfo.getRequestUri().getQuery()).build();
         List<User> users = JPAUtils.queryEntities(entityManager, User.class, queryParameters);

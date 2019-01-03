@@ -39,6 +39,10 @@
             <artifactId>kumuluzee-discovery-etcd</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.kumuluz.ee.metrics</groupId>
+            <artifactId>kumuluzee-metrics-core</artifactId>
+        </dependency>
+        <dependency>
             <groupId>asmohitri</groupId>
             <artifactId>models</artifactId>
         </dependency>
