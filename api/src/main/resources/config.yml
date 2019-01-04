@@ -19,5 +19,20 @@ kumuluzee:
   discovery:
     etcd:
       hosts: http://192.168.99.100:2379
+  health:
+    checks:
+      data-source-health-check:
+        jndi-name: jdbc/streamingDS
+      disk-space-health-check:
+        threshold: 50000000
+      etcd-health-check:
+        connection-url: http://192.168.99.100:2379/health # pravi url?
+  metrics:
+    web-instrumentation:
+    - name: subscriptions-endpoint
+      url-pattern: /api/v1/*
+      status-codes: 500
+#    - name: songs-endpoint
+#      url-pattern: /api/v1/songs/* nepotrebno tu?
 tests:
   maintenance-mode: false
