@@ -144,12 +144,10 @@ public class UsersBean {
     }
 
     public List<Playlist> getPlaylists(int userId) {
-        System.out.println(basePath.get());
         if (basePath.isPresent()) {
             try {
                 List<Playlist> playlists =  httpClient.target(basePath.get() + "/api/v1/playlists?where=userId:EQ:" + userId)
                         .request().get(new GenericType<List<Playlist>>(){});
-                System.out.println(playlists);
                 return playlists;
             } catch (WebApplicationException | ProcessingException exception) {
                 System.out.println(exception.getMessage());
