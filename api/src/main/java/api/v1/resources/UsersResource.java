@@ -6,12 +6,13 @@ import beans.UsersBean;
 import entities.User;
 
 import javax.enterprise.context.ApplicationScoped;
+import com.kumuluz.ee.logs.cdi.Log;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
-
+@Log
 @ApplicationScoped
 @Path("/users")
 @Produces(MediaType.APPLICATION_JSON)
