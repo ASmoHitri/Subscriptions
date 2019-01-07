@@ -9,8 +9,11 @@ import javax.enterprise.context.ApplicationScoped;
 @ConfigBundle("service")
 public class AppConfigs {
 
-    @ConfigValue(value="maintenance-mode", watch=true)
+    @ConfigValue(value = "maintenance-mode", watch = true)
     private Boolean maintenanceMode;
+
+    @ConfigValue(value = "service-available", watch = true)
+    private Boolean serviceAvailable;
 
     public Boolean getMaintenanceMode() {
         return maintenanceMode;
@@ -20,4 +23,11 @@ public class AppConfigs {
         this.maintenanceMode = maintenanceMode;
     }
 
+    public Boolean getServiceAvailable() {
+        return serviceAvailable;
+    }
+
+    public void setServiceAvailable(Boolean serviceAvailable) {
+        this.serviceAvailable = serviceAvailable;
+    }
 }

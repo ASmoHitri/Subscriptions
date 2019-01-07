@@ -27,7 +27,7 @@ spec:
         - name: KUMULUZEE_DATASOURCES0_CONNECTIONURL
           value: jdbc:postgresql://postgres:5432/streaming
         - name: KUMULUZEE_HEALTH_CHECKS_ETCDHEALTHCHECK_CONNECTIONURL
-            value: http://etcd:2379/health # pravi path?
+            value: http://etcd:2379/health
         ports:
         - containerPort: 8080
           protocol: TCP
