@@ -1,6 +1,9 @@
 package beans;
 
 import com.kumuluz.ee.discovery.annotations.DiscoverService;
+import com.kumuluz.ee.logs.LogManager;
+import com.kumuluz.ee.logs.Logger;
+import org.eclipse.microprofile.metrics.annotation.Timed;
 import com.kumuluz.ee.rest.beans.QueryParameters;
 import com.kumuluz.ee.rest.utils.JPAUtils;
 import configurations.AppConfigs;
@@ -33,6 +36,7 @@ import java.util.Optional;
 
 @ApplicationScoped
 public class UsersBean {
+    private static Logger LOG = LogManager.getLogger(UsersBean.class.getName());
 
     @Inject
     private AppConfigs appConfig;
@@ -49,6 +53,7 @@ public class UsersBean {
     @DiscoverService("microservice-catalogs")
     private Optional<String> basePath;
 
+    @Timed(name = "get-users")
     public List<ResponseUser> getUsers() {
         QueryParameters queryParameters = QueryParameters.query(uriInfo.getRequestUri().getQuery()).build();
         List<User> users = JPAUtils.queryEntities(entityManager, User.class, queryParameters);
@@ -61,7 +66,7 @@ public class UsersBean {
 
     public ResponseUser getUser(int userId) {
         if (appConfig.getMaintenanceMode()) {
-            System.out.println("Warning: maintenance mode enabled");
+            LOG.warn("Maintenance mode enabled");
         }
         User user = entityManager.find(User.class, userId);
         if (user != null){
@@ -144,12 +149,10 @@ public class UsersBean {
     }
 
     public List<Playlist> getPlaylists(int userId) {
-        System.out.println(basePath.get());
         if (basePath.isPresent()) {
             try {
                 List<Playlist> playlists =  httpClient.target(basePath.get() + "/api/v1/playlists?where=userId:EQ:" + userId)
                         .request().get(new GenericType<List<Playlist>>(){});
-                System.out.println(playlists);
                 return playlists;
             } catch (WebApplicationException | ProcessingException exception) {
                 System.out.println(exception.getMessage());

@@ -5,7 +5,7 @@ kumuluzee:
     name: dev
   datasources:
       - jndi-name: jdbc/streamingDS
-        connection-url: jdbc:postgresql://192.168.99.100:5432/streaming
+        connection-url: jdbc:postgresql://192.168.99.100:5432/subscriptions
         username: postgres
         password: postgres
         max-pool-size: 20
@@ -19,5 +19,19 @@ kumuluzee:
   discovery:
     etcd:
       hosts: http://192.168.99.100:2379
-tests:
+  health:
+    checks:
+      data-source-health-check:
+        jndi-name: jdbc/streamingDS
+      disk-space-health-check:
+        threshold: 50000000
+      etcd-health-check:
+        connection-url: http://192.168.99.100:2379/health
+  metrics:
+    web-instrumentation:
+    - name: subscriptions-endpoint
+      url-pattern: /api/v1/*
+      status-codes: 500
+
+service:
   maintenance-mode: false
