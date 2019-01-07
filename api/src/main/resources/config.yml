@@ -5,7 +5,7 @@ kumuluzee:
     name: dev
   datasources:
       - jndi-name: jdbc/streamingDS
-        connection-url: jdbc:postgresql://192.168.99.100:5434/streaming
+        connection-url: jdbc:postgresql://192.168.99.100:5432/subscriptions
         username: postgres
         password: postgres
         max-pool-size: 20
