@@ -6,7 +6,7 @@ import com.kumuluz.ee.configuration.cdi.ConfigValue;
 import javax.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
-@ConfigBundle("test")
+@ConfigBundle("service")
 public class AppConfigs {
 
     @ConfigValue(value="maintenance-mode", watch=true)

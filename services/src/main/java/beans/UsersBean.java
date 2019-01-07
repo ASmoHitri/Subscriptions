@@ -67,7 +67,6 @@ public class UsersBean {
     public ResponseUser getUser(int userId) {
         if (appConfig.getMaintenanceMode()) {
             LOG.warn("Maintenance mode enabled");
-            return null;
         }
         User user = entityManager.find(User.class, userId);
         if (user != null){
