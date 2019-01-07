@@ -35,3 +35,4 @@ kumuluzee:
 
 service:
   maintenance-mode: false
+  service-available: true
