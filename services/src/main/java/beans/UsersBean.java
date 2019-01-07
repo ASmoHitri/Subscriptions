@@ -1,6 +1,8 @@
 package beans;
 
 import com.kumuluz.ee.discovery.annotations.DiscoverService;
+import com.kumuluz.ee.logs.LogManager;
+import com.kumuluz.ee.logs.Logger;
 import org.eclipse.microprofile.metrics.annotation.Timed;
 import com.kumuluz.ee.rest.beans.QueryParameters;
 import com.kumuluz.ee.rest.utils.JPAUtils;
@@ -34,6 +36,7 @@ import java.util.Optional;
 
 @ApplicationScoped
 public class UsersBean {
+    private static Logger LOG = LogManager.getLogger(UsersBean.class.getName());
 
     @Inject
     private AppConfigs appConfig;
@@ -49,7 +52,8 @@ public class UsersBean {
     @Inject
     @DiscoverService("microservice-catalogs")
     private Optional<String> basePath;
-    @Timed(name = "get-users") //samo ta?
+
+    @Timed(name = "get-users")
     public List<ResponseUser> getUsers() {
         QueryParameters queryParameters = QueryParameters.query(uriInfo.getRequestUri().getQuery()).build();
         List<User> users = JPAUtils.queryEntities(entityManager, User.class, queryParameters);
@@ -62,7 +66,8 @@ public class UsersBean {
 
     public ResponseUser getUser(int userId) {
         if (appConfig.getMaintenanceMode()) {
-            System.out.println("Warning: maintenance mode enabled");
+            LOG.warn("Maintenance mode enabled");
+            return null;
         }
         User user = entityManager.find(User.class, userId);
         if (user != null){

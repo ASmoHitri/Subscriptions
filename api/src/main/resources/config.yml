@@ -33,5 +33,5 @@ kumuluzee:
       url-pattern: /api/v1/*
       status-codes: 500
 
-tests:
+test:
   maintenance-mode: false
