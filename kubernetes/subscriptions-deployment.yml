@@ -23,19 +23,19 @@ spec:
         - name: KUMULUZEE_SERVER_HTTP_PORT
           value: "8080"
         - name: KUMULUZEE_SERVER_BASE-URL
-          value: http://159.122.186.127:30729
+          value: http://159.122.186.127:30496
         - name: KUMULUZEE_DATASOURCES0_CONNECTIONURL
-          value: jdbc:postgresql://postgres:5432/streaming
+          value: jdbc:postgresql://postgres:5432/subscriptions
         - name: KUMULUZEE_HEALTH_CHECKS_ETCDHEALTHCHECK_CONNECTIONURL
-            value: http://etcd:2379/health
+          value: http://etcd:2379/health
         ports:
         - containerPort: 8080
           protocol: TCP
-          name: subscriptions-port
+          name: subscrs-port
         livenessProbe:
           httpGet:
             path: /health
-            port: subscriptions-port
+            port: subscrs-port
           initialDelaySeconds: 30
           periodSeconds: 3
 ---
