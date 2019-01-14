@@ -3,6 +3,9 @@ package beans;
 import com.kumuluz.ee.discovery.annotations.DiscoverService;
 import com.kumuluz.ee.logs.LogManager;
 import com.kumuluz.ee.logs.Logger;
+import org.eclipse.microprofile.faulttolerance.CircuitBreaker;
+import org.eclipse.microprofile.faulttolerance.Fallback;
+import org.eclipse.microprofile.faulttolerance.Timeout;
 import org.eclipse.microprofile.metrics.annotation.Timed;
 import com.kumuluz.ee.rest.beans.QueryParameters;
 import com.kumuluz.ee.rest.utils.JPAUtils;
@@ -18,6 +21,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.ProcessingException;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.client.Client;
@@ -30,6 +34,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -148,6 +153,9 @@ public class UsersBean {
         return false;
     }
 
+    @Timeout(value=2, unit=ChronoUnit.SECONDS)
+    @CircuitBreaker(delay=2, delayUnit=ChronoUnit.SECONDS, requestVolumeThreshold=3)
+    @Fallback(fallbackMethod = "getPlaylistsFallback")
     public List<Playlist> getPlaylists(int userId) {
         if (basePath.isPresent()) {
             try {
@@ -156,10 +164,14 @@ public class UsersBean {
                 return playlists;
             } catch (WebApplicationException | ProcessingException exception) {
                 System.out.println(exception.getMessage());
-                return null;
+                throw new InternalServerErrorException(exception);
             }
         }
         return null;
+    }
+
+    public List<Playlist> getPlaylistsFallback(int userId) {
+        return new ArrayList<>();
     }
 
     private void beginTx() {

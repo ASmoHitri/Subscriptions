@@ -23,7 +23,7 @@ spec:
         - name: KUMULUZEE_SERVER_HTTP_PORT
           value: "8080"
         - name: KUMULUZEE_SERVER_BASE-URL
-          value: http://159.122.186.127:30496
+          value: http://159.122.186.127:30155
         - name: KUMULUZEE_DATASOURCES0_CONNECTIONURL
           value: jdbc:postgresql://postgres:5432/subscriptions
         - name: KUMULUZEE_HEALTH_CHECKS_ETCDHEALTHCHECK_CONNECTIONURL
