@@ -4,15 +4,15 @@
         <Console name="console" target="SYSTEM_OUT">
             <PatternLayout pattern="%d %p %marker %m %X %ex %n"/>
         </Console>
-        <Socket name="logstash" host="0231eb15-f2f1-4ccb-85e9-770648f9e5cc-ls.logit.io"
-                port="13113" protocol="tcp">
+        <Socket name="logstash" host="7c8a6614-e22d-4bfa-8229-1fc5c4f990b1-ls.logit.io"
+                port="26449" protocol="tcp">
             <JSONLayout complete="false" compact="true" eventEol="true" charset="UTF-8" properties="true"/>
         </Socket>
     </Appenders>
     <Loggers>
         <Root level="info">
             <AppenderRef ref="console" level="warning"/>
-            <AppenderRef ref="logstash" level="all"/>
+            <AppenderRef ref="logstash" level="trace"/>
         </Root>
     </Loggers>
 </Configuration>

@@ -1,6 +1,5 @@
 package api.v1.interceptors;
 
-import com.kumuluz.ee.common.runtime.EeRuntime;
 import com.kumuluz.ee.configuration.utils.ConfigurationUtil;
 import com.kumuluz.ee.logs.cdi.Log;
 import org.apache.logging.log4j.CloseableThreadContext;

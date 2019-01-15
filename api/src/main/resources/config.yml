@@ -32,6 +32,26 @@ kumuluzee:
     - name: subscriptions-endpoint
       url-pattern: /api/v1/*
       status-codes: 500
+#  logs:
+#    config-file: '<?xml version="1.0" encoding="UTF-8"?>
+#                     <Configuration name="subscriptions">
+#                         <Appenders>
+#                             <Console name="console" target="SYSTEM_OUT">
+#                                 <PatternLayout pattern="%d %p %marker %m %X %ex %n"/>
+#                             </Console>
+#                             <Socket name="logitio" host="7c8a6614-e22d-4bfa-8229-1fc5c4f990b1-ls.logit.io"
+#                             port="26449" protocol="tcp">
+#                                 <JSONLayout complete="false" compact="true" eventEol="true" charset="UTF-8" properties="true"/>
+#                             </Socket>
+#                         </Appenders>
+#                         <Loggers>
+#                             <!-- Default logger -->
+#                             <Root level="all">
+#                                 <AppenderRef ref="console" level="info"/>
+#                                 <AppenderRef ref="logitio" level="trace"/>
+#                             </Root>
+#                         </Loggers>
+#                     </Configuration>'
 
 service:
   maintenance-mode: false
